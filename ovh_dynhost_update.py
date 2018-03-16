@@ -26,8 +26,6 @@ curr_ip = json.loads(requests.get("http://v4.ifconfig.co/json").content)['ip']
 # 4. Compare with the current public IP address of this host
 if (curr_ip == ip):
     sys.exit()
-else:
-    print "IP address is still the same, no need to update"
 
 # 5. If the public IP has been changed, update the DynHost IP address
 result = client.put('/domain/zone/' + domain + '/dynHost/record/' + str(dynhost_id), 
