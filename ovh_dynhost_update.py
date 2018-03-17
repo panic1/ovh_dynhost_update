@@ -5,10 +5,13 @@ import ovh
 import requests
 from ConfigParser import RawConfigParser, NoSectionError, NoOptionError
 
+CONF_FILE = 'domain.conf'
+
 domain_config = RawConfigParser()
-domain_config.read("./domain.conf")
-domain = domain_config.get("zone", "domain")
-subdomain = domain_config.get("zone", "subdomain")
+domain_config.read(CONF_FILE)
+zone = domain_config.sections()[0]
+domain = domain_config.get(zone, "domain")
+subdomain = domain_config.get(zone, "subdomain")
 
 # Instanciate an OVH Client, reads from ovh.conf
 client = ovh.Client()
@@ -30,6 +33,6 @@ if (curr_ip == ip):
 # 5. If the public IP has been changed, update the DynHost IP address
 result = client.put('/domain/zone/' + domain + '/dynHost/record/' + str(dynhost_id), 
     ip=curr_ip,
-    subDomain='cloud',
+    subDomain=subdomain,
 )
 
